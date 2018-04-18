@@ -46,26 +46,37 @@ def extract_data(path):
 
 def pdf_excel():
 
+    #fetching all the pdf files
     files=get_pdf_files()
 
+
+    #opening a new excel book
     wb=xlwt.Workbook()
     ws=wb.add_sheet("Sheet 1")
 
+    #setting the width of excel sheet columns for accomodating long fields
     ws.col(0).width=7000
     ws.col(2).width=7000
 
 
+    #iterating through all the pdf files
     for i in range(len(files)):
         print ("PROCESSING "+str(i+1)+" OUT OF "+str(len(files))+"PDF'S")
+
+        #the next function gets the text from the pdf
         parsed_text=extract_data(files[i])
+
+
+
+        #THE REMAINING CODDE EXTRACTS DATA FROM PDF
         formatted_text=parsed_text.split("Detailed",1)[0]
         inser_data=extract_fields(formatted_text)
         for j in range(len(inser_data)):
-            ws.write(i,j,inser_data[j])
+            ws.write(i,j,inser_data[j])   #WRITTING TO EXCEL SHEET
 
 
     print ("FILE SAVED AS  \'parsed.xls\'")
-    wb.save('parsed.xls')
+    wb.save('parsed.xls')   #SAVING TO EXCEL SHEET
 
 
 
@@ -73,10 +84,10 @@ def pdf_excel():
 
 def extract_fields(text):
 
-    text = text.replace('\\n', " ")
+    text = text.replace('\\n', " ")  #removing \\n character from parsed text
 
     text_values=text.split("Total",2)[2]
-    values=re.findall(r'\d+\.\d+|\d\d|\d',text_values)
+    values=re.findall(r'\d+\.\d+|\d\d|\d',text_values)  #finding scores
 
 
 
@@ -88,30 +99,30 @@ def extract_fields(text):
         if w not in stop_words:
             tokens.append(w)
 
-    tokens_with_pos=nltk.pos_tag(tokens)
+    tokens_with_pos=nltk.pos_tag(tokens)   #getting all details with stop words removed
 
 
     nouns=[]
 
     for word,pos in tokens_with_pos:
         if(pos=='NNP'or pos=='NN'):
-            nouns.append(word)
+            nouns.append(word)       #getting nouns
 
 
 
 
-    name=nouns[2]
+    name=nouns[2]    # getting name of teacher ( which is a noun)
 
 
     subject=""
-    i=5
+    i=5                #SHORTCUT FOR GETTING SUBJECT NAME IN FULL
     while(nouns[i]!='Semester'):
         subject+=nouns[i]
         i+=1
 
 
 
-    year=re.findall(r'20\d\d',text)
+    year=re.findall(r'20\d\d',text)  # regex for finding year of teaching
 
 
     ret=[]
@@ -121,6 +132,7 @@ def extract_fields(text):
     ret=ret+values
     return ret
 
+# the above sequence of codes returns a list with all data to be inserted into excel
 
 
 
