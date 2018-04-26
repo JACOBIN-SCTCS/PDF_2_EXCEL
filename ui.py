@@ -9,7 +9,7 @@ ws=wb.sheet_by_index(0)
 
 
 
-
+#function which plots the graph
 def plot(teacher,subjectname):
     name=teacher
     subject=subjectname
@@ -39,7 +39,7 @@ def plot(teacher,subjectname):
             year.append(ws.cell_value(i,2))
 
 
-
+    #plotting the graph from data extracted
     pt.plot(year,t_score ,marker='o' ,color='r',label=subject)
     pt.axis([2000, 2019 , 70,100])
     pt.ylabel('Total score')
@@ -50,6 +50,8 @@ def plot(teacher,subjectname):
 
 
 
+
+#getting the subject name and teacher name from the GUI and calling plot function
 def get():
     subject=variable.get()
     teacher_name=var2.get()
