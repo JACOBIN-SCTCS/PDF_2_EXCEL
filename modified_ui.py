@@ -90,7 +90,8 @@ class Window(QtGui.QMainWindow):
 
         
         ax.plot(list_years,list_score,marker='o' ,color='r')
-         
+        ax.set_xlim(2007,2018)
+        ax.set_ylim(0,100)
         ax.set_xlabel('Year')
         ax.set_ylabel('TotalScore')
         self.canvas.draw() 
