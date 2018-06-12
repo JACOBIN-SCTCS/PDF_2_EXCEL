@@ -41,7 +41,7 @@ def plot(teacher,subjectname):
 
     #plotting the graph from data extracted
     pt.plot(year,t_score ,marker='o' ,color='r',label=subject)
-    pt.axis([2000, 2019 , 70,100])
+    #pt.axis([2000, 2019 , 70,100])
     pt.ylabel('Total score')
     pt.xlabel('Year')
     pt.title(name)
